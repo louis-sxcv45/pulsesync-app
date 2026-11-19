@@ -17,7 +17,7 @@ class MonitorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Surface persistence errors explicitly (no silent failures).
+
     context.select<QueueProvider, String?>((q) => q.error);
     final error = context.read<QueueProvider>().error;
     if (error != null) {

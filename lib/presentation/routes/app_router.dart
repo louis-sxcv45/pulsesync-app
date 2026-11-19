@@ -11,7 +11,6 @@ class AppRoutes {
 class AppRouter {
   AppRouter._();
 
-  /// Created once (static) so it is not rebuilt on every widget rebuild.
   static final GoRouter router = GoRouter(
     initialLocation: AppRoutes.monitor,
     routes: [

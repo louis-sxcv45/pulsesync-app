@@ -4,7 +4,6 @@ enum NetworkMode { online, unstable, offline }
 
 enum SignalLevel { normal, warning, critical }
 
-/// -10.0..-22.0 normal, -22.1..-27.0 warning, < -27.0 critical.
 SignalLevel signalLevelOf(double dbm) {
   if (dbm >= -22.0) return SignalLevel.normal;
   if (dbm >= -27.0) return SignalLevel.warning;
@@ -24,7 +23,7 @@ class QueueItem {
     this.syncedAt,
   });
 
-  final String id; // UUID v4 -> idempotency key
+  final String id;
   final String odpId;
   final double signalDbm;
   final String category;

@@ -46,10 +46,9 @@ class QueueProvider extends ChangeNotifier {
     if (m == mode) return;
     mode = m;
     _notify();
-    if (m != NetworkMode.offline) await drain(); // Offline -> Online: auto-drain
+    if (m != NetworkMode.offline) await drain();
   }
 
-  /// Optimistic: UI is updated first, persistence happens right after.
   Future<void> add({
     required String odpId,
     required double signalDbm,
@@ -85,7 +84,6 @@ class QueueProvider extends ChangeNotifier {
     _notify();
   }
 
-  /// FIFO drain. Single worker (guarded by [_draining]).
   Future<void> drain() async {
     if (_draining || mode == NetworkMode.offline || _disposed) return;
     _draining = true;
@@ -99,7 +97,6 @@ class QueueProvider extends ChangeNotifier {
     } finally {
       _draining = false;
     }
-    // Items added / mode flipped while draining.
     if (!_disposed && mode != NetworkMode.offline) {
       final left = await _repo.getPending();
       if (left.isNotEmpty) unawaited(drain());
@@ -122,12 +119,11 @@ class QueueProvider extends ChangeNotifier {
         if (attempt >= AppStrings.maxRetry) {
           await _save(
               current.copyWith(status: SyncStatus.failed, retryCount: attempt));
-          return; // dead letter
+          return;
         }
         current =
             current.copyWith(status: SyncStatus.retrying, retryCount: attempt);
         await _save(current);
-        // Exponential backoff + jitter: 1s, 2s, 4s ...
         final delayMs = 1000 * pow(2, attempt - 1).toInt() + _rand.nextInt(250);
         await Future<void>.delayed(Duration(milliseconds: delayMs));
       }

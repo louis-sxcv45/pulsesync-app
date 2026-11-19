@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:pulsesync/data/local/app_database.dart';
+import 'package:pulsesync/data/repositories/queue_repository_impl.dart';
+import 'package:pulsesync/data/services/sync_service.dart';
 import 'package:pulsesync/data/services/telemetry_service.dart';
+import 'package:pulsesync/presentation/providers/queue_provider.dart';
 import 'package:pulsesync/presentation/providers/telemetry_provider.dart';
 import 'package:pulsesync/presentation/resources/colors_manager.dart';
 import 'package:pulsesync/presentation/routes/app_router.dart';
@@ -12,7 +16,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -20,6 +23,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           lazy: false,
           create: (_) => TelemetryProvider(TelemetryService())..start(),
+        ),
+        ChangeNotifierProvider(
+          lazy: false,
+          create: (_) =>
+              QueueProvider(QueueRepositoryImpl(AppDatabase()), SyncService())
+                ..init(),
         ),
       ],
       child: MaterialApp.router(
@@ -36,5 +45,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-

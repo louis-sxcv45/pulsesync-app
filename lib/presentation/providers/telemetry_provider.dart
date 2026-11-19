@@ -31,7 +31,7 @@ class TelemetryProvider extends ChangeNotifier {
 
   @override
   void dispose() {
-    _sub?.cancel(); // lifecycle hygiene: no leaked subscription/timer
+    _sub?.cancel();
     _sub = null;
     super.dispose();
   }

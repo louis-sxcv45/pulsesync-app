@@ -8,7 +8,6 @@ import '../resources/colors_manager.dart';
 import '../resources/font_manager.dart';
 import '../resources/values_manager.dart';
 
-/// Snapshot is read ONCE when the button is tapped -> locked value.
 Future<void> showAnomalySheet(BuildContext context) {
   final snapshot = context.read<TelemetryProvider>().value;
   return showModalBottomSheet<void>(
@@ -48,13 +47,13 @@ class _AnomalySheetState extends State<AnomalySheet> {
     final odp = _odpCtrl.text.trim();
     final note = _noteCtrl.text.trim();
     final category = _category!;
-    Navigator.of(context).pop(); // optimistic: close immediately
+    Navigator.of(context).pop();
     queue.add(
       odpId: odp,
       signalDbm: widget.snapshot,
       category: category,
       note: note,
-    ); // persistence runs async, UI never waits
+    );
   }
 
   @override
