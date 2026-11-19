@@ -8,6 +8,7 @@ import '../resources/colors_manager.dart';
 import '../resources/font_manager.dart';
 import '../resources/values_manager.dart';
 import '../widgets/anomaly_bottom_sheet.dart';
+import '../widgets/network_toggle.dart';
 import '../widgets/queue_monitor.dart';
 import '../widgets/telemetry_card.dart';
 
@@ -34,6 +35,8 @@ class MonitorScreen extends StatelessWidget {
           padding: const EdgeInsets.all(AppSize.s16),
           children: [
             const _Header(),
+            const SizedBox(height: AppSize.s12),
+            const NetworkToggle(),
             const SizedBox(height: AppSize.s12),
             const TelemetryCard(),
             const SizedBox(height: AppSize.s12),
